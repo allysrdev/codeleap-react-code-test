@@ -8,7 +8,7 @@ export async function getPosts(): Promise<Post[]> {
       if (posts.length > 0) {
         resolve(posts);
       } else {
-        reject(new Error("Nenhum post encontrado."));
+        reject(new Error("No posts found."));
       }
     }, 500);
   });

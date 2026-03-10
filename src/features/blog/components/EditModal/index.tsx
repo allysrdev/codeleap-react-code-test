@@ -30,7 +30,7 @@ export default function EditPostModal({ post, onClose }: EditPostModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-      <div className="w-full max-w-xl bg-white p-5! rounded-[10px] flex flex-col gap-5! shadow-lg">
+      <div className="w-[80%] sm:w-full max-w-xl bg-white p-5! rounded-[10px] flex flex-col gap-5! shadow-lg">
         <h2 className="text-xl font-bold">Edit item</h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

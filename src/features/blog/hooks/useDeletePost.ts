@@ -6,16 +6,30 @@ import { toast } from "sonner";
 export function useDeletePost() {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<number, Error, number, { toastId: number }>({
     mutationFn: deletePost,
-    onSuccess: (id) => {
-      queryClient.setQueryData(["posts"], (oldPosts: Post[] = []) =>
-        oldPosts.filter((post) => post.id !== id),
-      );
-      toast.success("Post deleted successfully");
+
+    onMutate: () => {
+      const id = Number(toast.loading("Deleting post..."));
+      return { toastId: id };
     },
-    onError: (error) => {
-      toast.error(`Error deleting post: ${error.message}`);
+
+    onSuccess: (deletedPostId, _variables, context) => {
+      queryClient.setQueryData<Post[]>(["posts"], (oldPosts = []) =>
+        oldPosts.filter((post) => post.id !== deletedPostId),
+      );
+
+      if (context) {
+        toast.success("Post deleted successfully", { id: context.toastId });
+      }
+    },
+
+    onError: (error, _variables, context) => {
+      if (context) {
+        toast.error(`Error deleting post: ${error.message}`, {
+          id: context.toastId,
+        });
+      }
     },
   });
 }

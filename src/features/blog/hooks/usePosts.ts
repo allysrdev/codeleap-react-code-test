@@ -12,7 +12,7 @@ export const usePosts = () => {
   useEffect(() => {
     if (query.isError) {
       toast.error(
-        `Erro ao carregar posts: ${query.error.message || "Tente novamente."}`,
+        `Failed to fetch posts: ${query.error.message || "Try again."}`,
       );
     }
   }, [query.isError, query.error]);

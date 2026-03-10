@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import type { User } from "../../../@types/user";
 
-interface UserContextType {
+export interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;
 }

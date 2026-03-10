@@ -13,12 +13,19 @@ export function useUpdatePost() {
       id: number;
       data: { title: string; content: string };
     }) => updatePost(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-      toast.success("Post updated successfully");
+    onMutate: () => {
+      const toastId = Number(toast.loading("Updating post..."));
+      return { toastId };
     },
-    onError: (error) => {
-      toast.error(`Error updating post: ${error.message} `);
+
+    onSuccess: (_data, _variables, context) => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      toast.success("Post updated successfully", { id: context.toastId });
+    },
+    onError: (error, _variables, context) => {
+      toast.error(`Error updating post: ${error.message} `, {
+        id: context?.toastId,
+      });
     },
   });
 }

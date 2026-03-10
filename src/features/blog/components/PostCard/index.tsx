@@ -3,6 +3,7 @@ import { useUser } from "../../../auth/hooks/useUser";
 import { useState } from "react";
 import type { Post } from "../../../../@types/post";
 import EditPostModal from "../EditModal";
+import { dateFormatter } from "../../utils/dateFormatter";
 import DeletePostModal from "../DeleteModal";
 
 interface PostCardProps {
@@ -74,7 +75,7 @@ export default function PostCard({
       <div className="flex w-full p-5! flex-col gap-2">
         <div className="flex justify-between text-[#777777]">
           <h3 className="font-bold">@{username}</h3>
-          <p>{createdAt}</p>
+          <p>{dateFormatter(createdAt)}</p>
         </div>
         <div className="flex flex-col gap-5">
           <p>{content}</p>
