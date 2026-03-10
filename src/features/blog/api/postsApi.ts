@@ -1,12 +1,32 @@
 import type { Post } from "../../../@types/post";
 
-let posts: Post[] = [];
+let posts: Post[] = [
+  {
+    id: 0,
+    content: "",
+    created_datetime: "2026-03-10T01:23:12.673Z",
+    title: "Mock Post",
+    username: "Test",
+  },
+  {
+    id: 1,
+    content: "",
+    created_datetime: "2026-02-10T01:23:12.673Z",
+    title: "Mock Post 2",
+    username: "Test 2",
+  },
+];
 
 export async function getPosts(): Promise<Post[]> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (posts.length > 0) {
-        resolve(posts);
+        resolve(
+          posts.sort(
+            (a, b) =>
+              Date.parse(b.created_datetime) - Date.parse(a.created_datetime),
+          ),
+        );
       } else {
         reject(new Error("No posts found."));
       }

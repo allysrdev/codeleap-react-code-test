@@ -3,6 +3,7 @@ import type { Post } from "../../../../@types/post";
 import { useUpdatePost } from "../../hooks/useUpdatePost";
 import Button from "../../../../components/ui/Button";
 import Input from "../../../../components/ui/Input";
+import { createPortal } from "react-dom";
 
 interface EditPostModalProps {
   post: Post;
@@ -28,12 +29,19 @@ export default function EditPostModal({ post, onClose }: EditPostModalProps) {
     );
   }
 
-  return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+  return createPortal(
+    <div
+      data-testid="edit-modal"
+      className="fixed inset-0 bg-black/40 flex items-center justify-center"
+    >
       <div className="w-[80%] sm:w-full max-w-xl bg-white p-5! rounded-[10px] flex flex-col gap-5! shadow-lg">
         <h2 className="text-xl font-bold">Edit item</h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form
+          data-testid="edit-post-form"
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4"
+        >
           <div>
             <label className="text-sm">Title</label>
             <Input value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -57,10 +65,13 @@ export default function EditPostModal({ post, onClose }: EditPostModalProps) {
               Cancel
             </Button>
 
-            <Button type="submit">Save</Button>
+            <Button type="submit" className="bg-[#47B960]!">
+              Save
+            </Button>
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

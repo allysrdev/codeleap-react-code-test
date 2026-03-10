@@ -19,20 +19,23 @@ vi.mock("../../../auth/hooks/useUser", () => ({
 vi.mock("sonner", () => ({
   toast: {
     error: vi.fn(),
+    loading: vi.fn(() => "mockToastId"),
   },
 }));
 
 describe("PostForm", () => {
+  let mockMutateAsync: ReturnType<typeof vi.fn>;
+
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Configuração padrão dos mocks antes de cada teste
     (useUser as Mock).mockReturnValue({
       user: { username: "testuser" },
     });
 
+    mockMutateAsync = vi.fn();
     (useCreatePost as Mock).mockReturnValue({
-      mutate: vi.fn(),
+      mutateAsync: mockMutateAsync,
       isLoading: false,
     });
   });
@@ -66,9 +69,9 @@ describe("PostForm", () => {
   });
 
   it("should call createPost mutate with correct data and clear fields on successful submission", async () => {
-    const mockMutate = vi.fn();
+    const mockMutateAsync = vi.fn();
     (useCreatePost as Mock).mockReturnValue({
-      mutate: mockMutate,
+      mutateAsync: mockMutateAsync,
       isLoading: false,
     });
 
@@ -85,8 +88,8 @@ describe("PostForm", () => {
     fireEvent.click(createButton);
 
     await waitFor(() => {
-      expect(mockMutate).toHaveBeenCalledTimes(1);
-      expect(mockMutate).toHaveBeenCalledWith(
+      expect(mockMutateAsync).toHaveBeenCalledTimes(1);
+      expect(mockMutateAsync).toHaveBeenCalledWith(
         expect.objectContaining({
           title: "My New Post Title",
           content: "My New Post Content",

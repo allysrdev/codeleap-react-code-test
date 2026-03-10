@@ -63,10 +63,18 @@ export default function PostCard({
         <div
           className={` gap-5 ${user && user.username == username ? "flex" : "hidden"}`}
         >
-          <button onClick={handleRequestDeletion}>
+          <button
+            data-testid="delete-button"
+            onClick={handleRequestDeletion}
+            className="hover:opacity-80 cursor-pointer"
+          >
             <TrashIcon color="#ffffff" size={30} />
           </button>
-          <button onClick={handleRequestEdition}>
+          <button
+            onClick={handleRequestEdition}
+            data-testid="edit-button"
+            className="hover:opacity-80 cursor-pointer"
+          >
             <PencilCircleIcon color="#ffffff" size={30} />
           </button>
         </div>
