@@ -5,7 +5,12 @@ import { usePosts } from "../../features/blog/hooks/usePosts";
 export default function Blog() {
   const { data: posts, isLoading } = usePosts();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
 
   return (
     <div className="p-8! flex flex-col gap-5 h-full">

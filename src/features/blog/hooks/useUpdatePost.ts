@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updatePost } from "../api/postsApi";
+import { toast } from "sonner";
 
 export function useUpdatePost() {
   const queryClient = useQueryClient();
@@ -14,6 +15,10 @@ export function useUpdatePost() {
     }) => updatePost(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      toast.success("Post updated successfully");
+    },
+    onError: (error) => {
+      toast.error(`Error updating post: ${error.message} `);
     },
   });
 }

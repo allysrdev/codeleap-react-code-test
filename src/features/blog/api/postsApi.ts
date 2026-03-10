@@ -1,26 +1,33 @@
 import type { Post } from "../../../@types/post";
 
-let posts: Post[] = [
-  {
-    id: 1,
-    username: "John",
-    title: "Hello world",
-    content: "My first post",
-    created_datetime: new Date().toISOString(),
-  },
-];
+let posts: Post[] = [];
 
 export async function getPosts(): Promise<Post[]> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(posts);
+      if (posts.length > 0) {
+        resolve(posts);
+      } else {
+        reject(new Error("Nenhum post encontrado."));
+      }
     }, 500);
   });
 }
 
 export async function createPost(post: Omit<Post, "id" | "created_datetime">) {
-  return new Promise<Post>((resolve) => {
+  return new Promise<Post>((resolve, reject) => {
     setTimeout(() => {
+      if (!post.title?.trim()) {
+        return reject(new Error("Title is required"));
+      }
+
+      if (!post.content?.trim()) {
+        return reject(new Error("Content is required"));
+      }
+
+      if (!post.username?.trim()) {
+        return reject(new Error("Username is required"));
+      }
       const newPost = {
         ...post,
         id: Math.floor(Math.random() * 1000000),
