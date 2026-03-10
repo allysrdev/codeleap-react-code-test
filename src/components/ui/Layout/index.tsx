@@ -3,7 +3,7 @@ import { Toaster } from "sonner";
 
 export default function Layout() {
   return (
-    <div className="min-h-screen flex justify-center">
+    <div data-testid="layout" className="min-h-screen flex justify-center">
       <Toaster position="top-right" richColors />
       <div className="w-full min-h-screen sm:max-w-[50%] flex flex-col">
         <header className="bg-[#7695EC] p-8!">

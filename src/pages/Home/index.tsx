@@ -12,7 +12,7 @@ export default function Home() {
     }
   }, [user, navigate]);
   return (
-    <div>
+    <div data-testid="home-page">
       <SignUpModal />
     </div>
   );

@@ -7,7 +7,7 @@ export default function Blog() {
   const { data: posts, isLoading } = usePosts();
 
   return (
-    <div className="p-8! flex flex-col gap-5 h-full">
+    <div data-testid="blog-page" className="p-8! flex flex-col gap-5 h-full">
       <PostForm />
       {isLoading && (
         <div className="w-full h-full flex items-center justify-center flex-col gap-5">
