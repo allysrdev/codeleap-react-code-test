@@ -3,12 +3,15 @@ import { render, screen } from "@testing-library/react";
 import Layout from ".";
 import { MemoryRouter } from "react-router-dom";
 import { toast } from "sonner";
+import { UserProvider } from "../../../features/auth/providers/UserProvider";
 
 describe("Layout component", () => {
   it("renders header with correct title", () => {
     render(
       <MemoryRouter>
-        <Layout />
+        <UserProvider>
+          <Layout />
+        </UserProvider>
       </MemoryRouter>,
     );
 
@@ -19,7 +22,9 @@ describe("Layout component", () => {
   it("renders main content area", () => {
     render(
       <MemoryRouter>
-        <Layout />
+        <UserProvider>
+          <Layout />
+        </UserProvider>
       </MemoryRouter>,
     );
 
@@ -30,7 +35,9 @@ describe("Layout component", () => {
   it("renders Toaster component and shows a toast", async () => {
     render(
       <MemoryRouter>
-        <Layout />
+        <UserProvider>
+          <Layout />
+        </UserProvider>
       </MemoryRouter>,
     );
 

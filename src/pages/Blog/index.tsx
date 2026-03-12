@@ -9,7 +9,10 @@ export default function Blog() {
   const { data: posts, isLoading } = usePosts(page);
 
   return (
-    <div data-testid="blog-page" className="p-8! flex flex-col gap-5 h-full">
+    <div
+      data-testid="blog-page"
+      className="p-8! flex flex-col gap-5 min-h-screen"
+    >
       <PostForm />
       {isLoading && (
         <div className="w-full h-full flex items-center justify-center flex-col gap-5">
@@ -32,11 +35,11 @@ export default function Blog() {
             createdAt={post.created_datetime}
           />
         ))}
-      <div className="flex gap-4 justify-center mt-6">
+      <div className="flex gap-4 justify-center flex-1 items-center">
         <button
           disabled={page === 1}
           onClick={() => setPage((p) => p - 1)}
-          className="cursor-pointer hover:underline"
+          className="cursor-pointer hover:underline disabled:cursor-not-allowed disabled:text-zinc-500"
         >
           Previous
         </button>
@@ -46,7 +49,7 @@ export default function Blog() {
         <button
           disabled={!posts || posts.length < 5}
           onClick={() => setPage((p) => p + 1)}
-          className="cursor-pointer hover:underline"
+          className="cursor-pointer hover:underline disabled:cursor-not-allowed disabled:text-zinc-500"
         >
           Next
         </button>
