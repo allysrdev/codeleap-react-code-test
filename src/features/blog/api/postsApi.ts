@@ -1,91 +1,97 @@
 import type { Post } from "../../../@types/post";
 
-let posts: Post[] = [
-  {
-    id: 0,
-    content: "",
-    created_datetime: "2026-03-10T01:23:12.673Z",
-    title: "Mock Post",
-    username: "Test",
-  },
-];
+const BASE_URL = "https://dev.codeleap.co.uk/careers";
+
+type ApiResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Post[];
+};
 
 export async function getPosts(page: number, limit: number): Promise<Post[]> {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (posts.length > 0) {
-        const sorted = posts.sort(
-          (a, b) =>
-            Date.parse(b.created_datetime) - Date.parse(a.created_datetime),
-        );
+  const offset = (page - 1) * limit;
 
-        const start = (page - 1) * limit;
-        const end = start + limit;
-
-        resolve(sorted.slice(start, end));
-      } else {
-        reject(new Error("No posts found."));
-      }
-    }, 500);
+  const response = await fetch(`${BASE_URL}/?limit=${limit}&offset=${offset}`, {
+    method: "GET",
   });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch posts");
+  }
+
+  const data: ApiResponse = await response.json();
+
+  const sorted = data.results.sort(
+    (a, b) => Date.parse(b.created_datetime) - Date.parse(a.created_datetime),
+  );
+
+  return sorted;
 }
 
-export async function createPost(post: Omit<Post, "id" | "created_datetime">) {
-  return new Promise<Post>((resolve, reject) => {
-    setTimeout(() => {
-      if (!post.title?.trim()) {
-        return reject(new Error("Title is required"));
-      }
+export async function createPost(
+  post: Omit<Post, "id" | "created_datetime">,
+): Promise<Post> {
+  if (!post.title?.trim()) {
+    throw new Error("Title is required");
+  }
 
-      if (!post.content?.trim()) {
-        return reject(new Error("Content is required"));
-      }
+  if (!post.content?.trim()) {
+    throw new Error("Content is required");
+  }
 
-      if (!post.username?.trim()) {
-        return reject(new Error("Username is required"));
-      }
-      const newPost = {
-        ...post,
-        id: Math.floor(Math.random() * 1000000),
-        created_datetime: new Date().toISOString(),
-      };
+  if (!post.username?.trim()) {
+    throw new Error("Username is required");
+  }
 
-      posts = [newPost, ...posts];
-      resolve(newPost);
-    }, 500);
+  const response = await fetch(`${BASE_URL}/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(post),
   });
+
+  if (!response.ok) {
+    throw new Error("Failed to create post");
+  }
+
+  const data: Post = await response.json();
+
+  return data;
 }
 
 export const updatePost = async (
   id: number,
   data: { title: string; content: string },
 ): Promise<Post> => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const index = posts.findIndex((post) => post.id === id);
-
-      if (index === -1) {
-        reject(new Error("Post not found"));
-        return;
-      }
-
-      const updatedPost = {
-        ...posts[index],
-        ...data,
-      };
-
-      posts[index] = updatedPost;
-
-      resolve(updatedPost);
-    }, 500);
+  const response = await fetch(`${BASE_URL}/${id}/`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   });
+
+  if (response.status === 404) {
+    throw new Error("Post not found");
+  }
+
+  if (!response.ok) {
+    throw new Error("Failed to update post");
+  }
+
+  return response.json();
 };
 
 export const deletePost = async (id: number): Promise<number> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      posts = posts.filter((post) => post.id !== id);
-      resolve(id);
-    }, 500);
+  const response = await fetch(`${BASE_URL}/${id}/`, {
+    method: "DELETE",
   });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete post");
+  }
+
+  return id;
 };

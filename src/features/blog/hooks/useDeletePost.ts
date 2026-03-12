@@ -15,8 +15,9 @@ export function useDeletePost() {
     },
 
     onSuccess: (deletedPostId, _variables, context) => {
-      queryClient.setQueryData<Post[]>(["posts"], (oldPosts = []) =>
-        oldPosts.filter((post) => post.id !== deletedPostId),
+      queryClient.setQueriesData<Post[]>(
+        { queryKey: ["posts"] },
+        (oldPosts = []) => oldPosts.filter((post) => post.id !== deletedPostId),
       );
 
       if (context) {

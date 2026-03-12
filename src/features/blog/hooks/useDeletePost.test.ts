@@ -24,13 +24,13 @@ vi.mock("sonner", () => ({
 }));
 
 describe("useDeletePost hook", () => {
-  const setQueryDataMock = vi.fn();
+  const setQueriesDataMock = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
 
     (useQueryClient as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      setQueryData: setQueryDataMock,
+      setQueriesData: setQueriesDataMock,
     });
   });
 
@@ -84,12 +84,12 @@ describe("useDeletePost hook", () => {
 
     onSuccess!(1, 1, context);
 
-    expect(setQueryDataMock).toHaveBeenCalledWith(
-      ["posts"],
+    expect(setQueriesDataMock).toHaveBeenCalledWith(
+      { queryKey: ["posts"] },
       expect.any(Function),
     );
 
-    const updater = setQueryDataMock.mock.calls[0][1];
+    const updater = setQueriesDataMock.mock.calls[0][1];
 
     const oldPosts: Post[] = [
       {
