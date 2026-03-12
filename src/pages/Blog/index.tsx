@@ -2,9 +2,11 @@ import { ClipLoader } from "react-spinners";
 import PostCard from "../../features/blog/components/PostCard";
 import PostForm from "../../features/blog/components/PostForm";
 import { usePosts } from "../../features/blog/hooks/usePosts";
+import { useState } from "react";
 
 export default function Blog() {
-  const { data: posts, isLoading } = usePosts();
+  const [page, setPage] = useState<number>(1);
+  const { data: posts, isLoading } = usePosts(page);
 
   return (
     <div data-testid="blog-page" className="p-8! flex flex-col gap-5 h-full">
@@ -30,6 +32,25 @@ export default function Blog() {
             createdAt={post.created_datetime}
           />
         ))}
+      <div className="flex gap-4 justify-center mt-6">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage((p) => p - 1)}
+          className="cursor-pointer hover:underline"
+        >
+          Previous
+        </button>
+
+        <span>Page {page}</span>
+
+        <button
+          disabled={!posts || posts.length < 5}
+          onClick={() => setPage((p) => p + 1)}
+          className="cursor-pointer hover:underline"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

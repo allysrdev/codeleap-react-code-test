@@ -8,25 +8,21 @@ let posts: Post[] = [
     title: "Mock Post",
     username: "Test",
   },
-  {
-    id: 1,
-    content: "",
-    created_datetime: "2026-02-10T01:23:12.673Z",
-    title: "Mock Post 2",
-    username: "Test 2",
-  },
 ];
 
-export async function getPosts(): Promise<Post[]> {
+export async function getPosts(page: number, limit: number): Promise<Post[]> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (posts.length > 0) {
-        resolve(
-          posts.sort(
-            (a, b) =>
-              Date.parse(b.created_datetime) - Date.parse(a.created_datetime),
-          ),
+        const sorted = posts.sort(
+          (a, b) =>
+            Date.parse(b.created_datetime) - Date.parse(a.created_datetime),
         );
+
+        const start = (page - 1) * limit;
+        const end = start + limit;
+
+        resolve(sorted.slice(start, end));
       } else {
         reject(new Error("No posts found."));
       }

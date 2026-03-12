@@ -3,10 +3,11 @@ import { getPosts } from "../api/postsApi";
 import { toast } from "sonner";
 import { useEffect } from "react";
 
-export const usePosts = () => {
+export const usePosts = (page: number) => {
   const query = useQuery({
-    queryKey: ["posts"],
-    queryFn: getPosts,
+    queryKey: ["posts", page],
+    queryFn: () => getPosts(page, 5),
+    placeholderData: (previousData) => previousData,
   });
 
   useEffect(() => {

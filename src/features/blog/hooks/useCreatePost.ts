@@ -7,11 +7,16 @@ export function useCreatePost() {
 
   return useMutation({
     mutationFn: createPost,
+
     onSuccess: (newPost) => {
-      queryClient.setQueryData(["posts"], (oldPosts: Post[] = []) => [
+      queryClient.setQueryData(["posts", 1], (oldPosts: Post[] = []) => [
         newPost,
         ...oldPosts,
       ]);
+
+      queryClient.invalidateQueries({
+        queryKey: ["posts"],
+      });
     },
   });
 }
