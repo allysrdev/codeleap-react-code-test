@@ -8,6 +8,8 @@ A high-performance, scalable, and type-safe CRUD application built for the CodeL
 
 The **CodeLeap Network** is a social networking platform where users can join by providing a username and interact by creating, editing, and deleting posts. The application ensures a seamless experience with real-time-like updates and persistent authentication.
 
+Link: <https://codeleap-network-flame.vercel.app/>
+
 ### Key Features
 
 - **Persistent Authentication**: Seamless signup with local storage persistence.
